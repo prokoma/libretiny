@@ -101,7 +101,9 @@ def env_install_python_dependencies(env: Environment, dependencies: dict):
     to_install = []
     for name, spec in dependencies.items():
         install_spec = f'"{name}{dependencies[name]}"'
-        if name not in packages:
+        if spec and spec.startswith("git+"):
+            to_install.append(spec)
+        elif name not in packages:
             to_install.append(install_spec)
         elif spec:
             version_spec = semantic_version.Spec(spec)
