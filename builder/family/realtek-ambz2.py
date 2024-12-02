@@ -25,8 +25,9 @@ def get_public_key(private: bytes) -> bytes:
     return key.public_key()
 
 
-def encode_to_hex_escapes(data: bytes) -> str:
-    return ''.join(f'\\x{byte:02x}' for byte in data)
+def encode_for_define(data: bytes) -> str:
+    # we need to escape both shell and the C string
+    return '\\"' + ''.join(f'\\\\x{byte:02x}' for byte in data) + '\\"'
 
 
 public_key_bytes = get_public_key(ImageConfig(**board.get("image")).keys.decryption)
@@ -55,7 +56,7 @@ queue.AppendPublic(
         ("__ARM_ARCH_8M_MAIN__", "1"),
         ("CONFIG_BUILD_RAM", "1"),
         "V8M_STKOVF",
-        ("IMAGE_PUBLIC_KEY", f"\\\"{encode_to_hex_escapes(public_key_bytes)}\\\""),
+        ("IMAGE_PUBLIC_KEY", encode_for_define(public_key_bytes)),
     ],
     CPPPATH=[
         # allow including <ctype.h> from GCC instead of RTL SDK
