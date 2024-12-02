@@ -447,9 +447,7 @@ env.Replace(
         # use patched OTA image for device
         f"{image_firmware_is_ota},{image_firmware_is_ota}=device:ota1,ota2",
         # having flashed an application image, update the bootloader and partition table (incl. keys)
-        f"{image_bootloader}=device:boot;flasher:boot",
-        f"{image_part_table}=device:part_table;flasher:part_table",
-        # clearing headers of the "other" OTA image (hence the indexes are swapped)
-        f"{image_ota_clear},{image_ota_clear}=device:ota2,ota1;flasher:ota2,ota1",
+        f"{image_bootloader},{image_bootloader}=flasher:boot,boot",
+        f"{image_part_table},{image_part_table}=flasher:part_table,part_table",
     ],
 )
