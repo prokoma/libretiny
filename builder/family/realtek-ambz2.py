@@ -450,5 +450,7 @@ env.Replace(
         # having flashed an application image, update the bootloader and partition table (incl. keys)
         f"{image_bootloader},{image_bootloader}=flasher:boot,boot",
         f"{image_part_table},{image_part_table}=flasher:part_table,part_table",
+        # clearing headers of the "other" OTA image (hence the indexes are swapped)
+        f"{image_ota_clear},{image_ota_clear}=flasher:ota2,ota1",
     ],
 )
